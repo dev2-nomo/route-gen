@@ -95,13 +95,54 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
     ///
     buffer.writeln("class AppRouter extends NomoAppRouter {");
 
-    buffer.writeln("final Future<bool> Function()? shouldPop;");
-    buffer.writeln("final Future<bool> Function()? willPop;");
+    buffer.writeln("""final List<NavigatorObserver> navigatorObservers;
+  final Map<Key, List<NavigatorObserver>> nestedNavigatorObservers;
 
-    buffer.writeln("late final RouterConfig<Object> config;");
-    buffer.writeln("late final NomoRouterDelegate delegate;");
+  /// Can only be accessed after [_configCompleter] is completed
+  late final RouterConfig<Object> config;
 
-    buffer.writeln("AppRouter({this.shouldPop, this.willPop}) : super(");
+  /// Can only be accessed after [_configCompleter] is completed
+  late final NomoRouterDelegate delegate;
+
+  final Completer<RouterConfig<Object>> _configCompleter = Completer();
+
+  Future<RouterConfig<Object>> get configFuture => _configCompleter.future;
+
+  void init({
+    Widget? inital,
+    Future<bool> Function()? shouldPop,
+    Future<bool> Function()? willPop,
+  }) {
+    delegate = NomoRouterDelegate(
+      appRouter: this,
+      initial: inital,
+      nestedObservers: nestedNavigatorObservers,
+      observers: navigatorObservers,
+    );
+    _configCompleter.complete(
+      RouterConfig(
+        routerDelegate: delegate,
+        backButtonDispatcher:
+            NomoBackButtonDispatcher(delegate, shouldPop, willPop),
+        routeInformationParser: NomoRouteInformationParser(),
+        routeInformationProvider: PlatformRouteInformationProvider(
+          initialRouteInformation: RouteInformation(
+            uri:
+                WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
+          ),
+        ),
+      ),
+    );
+  }""");
+
+    buffer.writeln("""AppRouter({
+    bool delayInit = false,
+    this.navigatorObservers = const [],
+    this.nestedNavigatorObservers = const {},
+    Widget? inital,
+    Future<bool> Function()? shouldPop,
+    Future<bool> Function()? willPop,
+  }) : super(""");
     buffer.writeln("{");
     for (final route in routes) {
       final name = "${route.$1}${route.$2}";
@@ -129,19 +170,20 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
     buffer.writeln("$name.expanded.whereType<NestedNavigator>().toList(),");
     buffer.writeln(") {");
 
-    buffer.writeln("delegate = NomoRouterDelegate(appRouter: this);");
-    buffer.writeln("""config = RouterConfig(
-      routerDelegate: delegate,
-      backButtonDispatcher: NomoBackButtonDispatcher(delegate, shouldPop, willPop),
-      routeInformationParser: const NomoRouteInformationParser(),
-      routeInformationProvider: PlatformRouteInformationProvider(
-        initialRouteInformation: RouteInformation(
-          uri: WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
-        ),
-      )
-    );}""");
+    buffer.writeln("""if (!delayInit) {
+      init(
+        inital: inital,
+        shouldPop: shouldPop,
+        willPop: willPop,
+      );
+    } else {
+      assert(
+        inital == null && willPop == null && shouldPop == null,
+        "Provide inital, shouldPop, willPop in the init method.",
+      );
+    }""");
 
-    buffer.writeln("}");
+    buffer.writeln("}}");
 
     ///
     /// Routes
