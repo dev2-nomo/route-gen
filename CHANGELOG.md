@@ -10,3 +10,7 @@
 
 * Update AppRouter Generation
 * Add .gitignore
+
+## 0.0.4
+
+* Fix late Initialization error for AppRouter.config
