@@ -119,8 +119,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
       nestedObservers: nestedNavigatorObservers,
       observers: navigatorObservers,
     );
-    _configCompleter.complete(
-      RouterConfig(
+    config = RouterConfig(
         routerDelegate: delegate,
         backButtonDispatcher:
             NomoBackButtonDispatcher(delegate, shouldPop, willPop),
@@ -131,8 +130,8 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
                 WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
           ),
         ),
-      ),
     );
+    _configCompleter.complete(config);
   }""");
 
     buffer.writeln("""AppRouter({
