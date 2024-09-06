@@ -14,3 +14,7 @@
 ## 0.0.4
 
 * Fix late Initialization error for AppRouter.config
+
+## 0.0.5
+
+* Add initialUri parameter to AppRouter.init

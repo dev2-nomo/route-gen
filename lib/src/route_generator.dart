@@ -110,6 +110,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
 
   void init({
     Widget? inital,
+    Uri? initialUri,
     Future<bool> Function()? shouldPop,
     Future<bool> Function()? willPop,
   }) {
@@ -127,7 +128,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
         routeInformationProvider: PlatformRouteInformationProvider(
           initialRouteInformation: RouteInformation(
             uri:
-                WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
+             initialUri ?? WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
           ),
         ),
     );
