@@ -111,6 +111,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
   void init({
     Widget? inital,
     Uri? initialUri,
+    RouteInformationProvider? routeInformationProvider,
     Future<bool> Function()? shouldPop,
     Future<bool> Function()? willPop,
   }) {
@@ -125,7 +126,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
         backButtonDispatcher:
             NomoBackButtonDispatcher(delegate, shouldPop, willPop),
         routeInformationParser: NomoRouteInformationParser(),
-        routeInformationProvider: PlatformRouteInformationProvider(
+        routeInformationProvider: routeInformationProvider ?? PlatformRouteInformationProvider(
           initialRouteInformation: RouteInformation(
             uri:
              initialUri ?? WidgetsBinding.instance.platformDispatcher.defaultRouteName.uri,
