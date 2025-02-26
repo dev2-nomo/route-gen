@@ -22,3 +22,7 @@
 ## 0.0.6
 
 - Add RouteInformationProvider as parameter to AppRouter.init
+
+## 0.1.0
+
+Update Dependencies. Require sdk >= 3.6.0

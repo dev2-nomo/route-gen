@@ -1,16 +1,16 @@
 name: route_gen
 description: Route Generator for nomo_router
-version: 0.0.6
+version: 0.1.0
 repository: https://github.com/dev2-nomo/route-gen
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.6.0
 
 dependencies:
-  analyzer: ">=5.2.0 <7.0.0"
-  build: ^2.0.0
-  source_gen: ^1.4.0
-  collection: ^1.17.2
+  analyzer: ^7.3.0
+  build: ^2.4.2
+  source_gen: ^2.0.0
+  collection: ^1.19.1
 
 dev_dependencies:
   dart_flutter_team_lints: ^2.0.0

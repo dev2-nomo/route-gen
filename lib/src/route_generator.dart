@@ -61,7 +61,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
     final routes = expandedRoutes.map((listItem) {
       final pageType = listItem.pageType;
       if (pageType == null) return null;
-      final name = pageType.getDisplayString(withNullability: false);
+      final name = pageType.getDisplayString();
       final constructorParams = ((pageType.element as ClassElement)
                   .constructors
                   .firstOrNull
@@ -78,7 +78,7 @@ class RouteGenerator extends GeneratorForAnnotation<AppRoutes> {
           throw Exception(
               "No Required Parameters Allowed. Either make it optional or provide a default value");
         }
-        final type = param.type.getDisplayString(withNullability: true);
+        final type = param.type.getDisplayString();
         final name = param.name;
         final defaultValue = param.defaultValueCode;
 
