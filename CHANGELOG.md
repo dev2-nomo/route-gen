@@ -25,8 +25,4 @@
 
 ## 0.1.0
 
-Update Dependencies. Require sdk >= 3.6.0
-
-## 0.1.1
-
-Relax collection dependency
+Update Dependencies. Require sdk >= 3.6.0. Relax collection dependency
